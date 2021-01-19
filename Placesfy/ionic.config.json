@@ -1,0 +1,7 @@
+{
+  "name": "Placesfy",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
