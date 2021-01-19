@@ -10,11 +10,11 @@ const routes: Routes = [
             { path: "discover", children: [
                 {
                     path: "",
-                    loadChildren: "./discover/discover.module#DiscoverPageModule"
+                    loadChildren: './discover/discover.module#DiscoverPageModule'
                 },
                 {
                     path: ":placeId",
-                    loadChildren: './discover/place-detail/place-detail.module#PlaceDetailPageModel'
+                    loadChildren: './discover/place-detail/place-detail.module#PlaceDetailPageModule'
                 }
             ]},
             { path: "offers", children: [
