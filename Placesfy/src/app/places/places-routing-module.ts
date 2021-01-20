@@ -10,7 +10,7 @@ const routes: Routes = [
             { path: "discover", children: [
                 {
                     path: "",
-                    loadChildren: './discover/discover.module#DiscoverPageModule'
+                    loadChildren: "./discover/discover.module#DiscoverPageModule"
                 },
                 {
                     path: ":placeId",
@@ -35,6 +35,18 @@ const routes: Routes = [
                     loadChildren: "./offers/offer-bookings/offer-bookings.module#OfferBookingsPageModule"
                 }
             ]},
+            {
+                path: "new",
+                loadChildren: "./offers/new-offer/new-offer.module#NewOfferPageModule"
+            },
+            {
+                path: "edit/:placeId",
+                loadChildren: "./offers/edit-offer/edit-offer.module#EditOfferPageModule"
+            },
+            {
+                path: ":placeId",
+                loadChildren: "./offers/offer-bookings/offer-bookings.module#OfferBookingsPageModule"
+            },
             {
                 path: "",
                 redirectTo: "/places/tabs/discover",
