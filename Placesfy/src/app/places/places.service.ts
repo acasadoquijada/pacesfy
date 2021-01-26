@@ -11,19 +11,26 @@ export class PlacesService {
       "Manhattan Mansion",
       "In the heart of NY",
       "https://imgs.6sqft.com/wp-content/uploads/2014/06/21042533/Carnegie-Mansion-nyc.jpg",
-      149.99),
+      149.99,
+      new Date("2019-01-01"),
+      new Date("2019-01-11")
+      ),
       new Place(
         "p2",
         "Brooklyn Mansion",
         "In the heart of Brooklyn",
         "https://media.guestofaguest.com/t_article_content/gofg-media/2018/08/1/51322/df.jpg",
-        169.99),
+        169.99,
+        new Date("2020-01-01"),
+        new Date("2020-11-11")),
         new Place(
         "p3",
         "Seattle Mansion",
         "In the heart of Seattle",
         "https://static3.mansionglobal.com/production/media/article-images/5d1480cd59b9f72926e4c09548aa1824/large_S1-IX886_NINEEL_M_20210115101306.jpg?width=620&height=413",
-        200.99),
+        200.99,
+        new Date("2020-03-15"),
+        new Date("2020-05-11")),
   ];
 
   get places() {

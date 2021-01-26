@@ -1,5 +1,6 @@
 import { Route } from '@angular/compiler/src/core';
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { AuthService } from './auth.service';
@@ -12,6 +13,7 @@ import { AuthService } from './auth.service';
 export class AuthPage implements OnInit {
 
   isLoading = false;
+  isLogin = true;
 
   constructor(private authServivce: AuthService, private router: Router, private loadingController: LoadingController) { }
 
@@ -35,6 +37,27 @@ export class AuthPage implements OnInit {
       }, 1000);
     });
 
+  }
+
+  onSubmit(form: NgForm){
+    if(!form.valid){
+      return;
+    }
+
+    const email = form.value.email;
+    const password = form.value.password;
+
+    console.log(email, password);
+
+    if(this.isLogin) {
+      // send request to loging servers
+    } else {
+      // send request to singup servers
+    }
+  }
+
+  onSwitchAuthMode() {
+    this.isLogin = !this.isLogin;
   }
 
 }
