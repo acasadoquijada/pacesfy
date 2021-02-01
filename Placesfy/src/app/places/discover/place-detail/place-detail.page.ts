@@ -1,26 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ActionSheetController, ModalController, NavController } from '@ionic/angular';
+import { ActionSheetController, LoadingController, ModalController, NavController } from '@ionic/angular';
 import { CreateBookingComponent } from 'src/app/bookings/create-booking/create-booking.component';
 import { Place } from '../../places.model';
 import { PlacesService } from '../../places.service';
+import { Subscription } from 'rxjs'
+import { BookingService } from 'src/app/bookings/booking.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-place-detail',
   templateUrl: './place-detail.page.html',
   styleUrls: ['./place-detail.page.scss'],
 })
-export class PlaceDetailPage implements OnInit {
+export class PlaceDetailPage implements OnInit, OnDestroy {
 
   place: Place;
+  isBookable = false;
+  private placeSub: Subscription;
   constructor(
     private route:ActivatedRoute,
     private navCrtl: NavController,
     private placesService: PlacesService,
     private modalCtrl: ModalController,
-    private actionSheetCtrl: ActionSheetController) {
-
-
+    private actionSheetCtrl: ActionSheetController,
+    private bookingService: BookingService,
+    private loadingCtrl: LoadingController,
+    private authService: AuthService) {
     }
 
   ngOnInit() {
@@ -29,9 +35,11 @@ export class PlaceDetailPage implements OnInit {
         this.navCrtl.navigateBack("/places/tabs/offers");
         return;
       }
-
-      this.place = this.placesService.getPlace(paramMap.get("placeId"));
-      console.log(paramMap.get("placeId"));
+      
+      this.placeSub = this.placesService.getPlace(paramMap.get("placeId")).subscribe(place => { 
+        this.place = place
+        this.isBookable = place.userId !== this.authService.userId;
+      });
     });
   }
 
@@ -71,8 +79,29 @@ export class PlaceDetailPage implements OnInit {
       modalEl.present();
       return modalEl.onDidDismiss();
     }).then(resultData => {
-      console.log(resultData.data, resultData.role);
+      if(resultData.role == "confirm") {
+        this.loadingCtrl.create( {
+          message: "Booking place..."
+        }).then(loadingEl => {
+          loadingEl.present();  
+          const data = resultData.data.bookingData;
+          this.bookingService.addBookgin(
+            this.place.id, 
+            this.place.title, 
+            this.place.imageUrl, 
+            data.firstName, 
+            data.lastName, 
+            data.guestNumber,
+            data.startDate, 
+            data.endDate).subscribe(() => loadingEl.dismiss());
+        })
+      }
     })
   }
 
+  ngOnDestroy() {
+    if(this.placeSub) {
+      this.placeSub.unsubscribe();
+    }
+  }
 }

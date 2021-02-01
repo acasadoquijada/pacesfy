@@ -1,8 +1,9 @@
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LoadingController, NavController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { Place } from '../../places.model';
 import { PlacesService } from '../../places.service';
 
@@ -11,11 +12,13 @@ import { PlacesService } from '../../places.service';
   templateUrl: './edit-offer.page.html',
   styleUrls: ['./edit-offer.page.scss'],
 })
-export class EditOfferPage implements OnInit {
+export class EditOfferPage implements OnInit, OnDestroy {
 
   form: FormGroup;
   place: Place;
-  constructor(private route:ActivatedRoute, private navCrtl: NavController, private placesService: PlacesService) { }
+  private placeSub: Subscription;
+
+  constructor(private route:ActivatedRoute, private navCrtl: NavController, private placesService: PlacesService, private router: Router, private loadingCtrl: LoadingController) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
@@ -23,8 +26,12 @@ export class EditOfferPage implements OnInit {
         this.navCrtl.navigateBack("/places/tabs/offers");
         return;
       }
-      this.place = this.placesService.getPlace(paramMap.get("placeId"));
-      this.createForm();
+
+      this.placeSub = this.placesService.getPlace(paramMap.get("placeId")).subscribe(place =>  {
+        this.place = place
+        this.createForm(); 
+      });
+
     })
 
   }
@@ -46,6 +53,23 @@ export class EditOfferPage implements OnInit {
     if(!this.form.valid) {
       return;
     }
-    console.log(this.form);
+    this.loadingCtrl.create({
+      message: "Updated place",
+    }).then(loadingEl => {
+      loadingEl.present();
+      this.placesService.updatePlace(this.place.id, this.form.get("newTitle").value, this.form.get("newDescription").value).subscribe( () => {
+        loadingEl.dismiss();
+        this.form.reset();
+        this.router.navigate(['/places/tabs/offers']);
+      });
+
+    })
+
+  }
+
+  ngOnDestroy() {
+    if(this.placeSub) {
+      this.placeSub.unsubscribe();
+    }
   }
 }
