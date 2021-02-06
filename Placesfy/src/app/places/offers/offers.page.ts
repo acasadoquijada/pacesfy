@@ -13,19 +13,27 @@ import { PlacesService } from '../places.service';
 export class OffersPage implements OnInit, OnDestroy {
 
   loadedOffers: Place[];
+  isLoading = false;
   private placesSub: Subscription;
 
   constructor(private placesService: PlacesService, private router: Router) { }
 
   ngOnInit() {
-    this.placesSub = this.placesService.places.subscribe(places => this.loadedOffers = places);
+    this.placesSub = this.placesService.places.subscribe(places =>  {
+      this.loadedOffers = places
+    });
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.placesService.fetchPlaces().subscribe(() => {
+      this.isLoading = false;
+    });
   }
 
   onEdit(offerId: string, slidingEl: IonItemSliding) {
     slidingEl.close();
-
-   this.router.navigate(['/', 'places', 'tabs', 'offers', 'edit', offerId]);
-    //"['/', 'places', 'tabs', 'offers', offer.id]"
+    this.router.navigate(['/', 'places', 'tabs', 'offers', 'edit', offerId]);
   }
 
   ngOnDestroy() {

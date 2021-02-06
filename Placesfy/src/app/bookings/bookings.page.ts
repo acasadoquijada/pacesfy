@@ -14,12 +14,20 @@ export class BookingsPage implements OnInit, OnDestroy {
 
   constructor(private bookingsService: BookingService, private router: Router, private loadingCtrl: LoadingController) { }
 
+  isLoading = false;
   loadedBookings: Booking[];
   private bookingSub: Subscription;
 
   ngOnInit() {
     this.bookingSub = this.bookingsService.bookings.subscribe(bookings => {
       this.loadedBookings = bookings;
+    });
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.bookingsService.fetchBookings().subscribe( () => {
+      this.isLoading = false;
     });
   }
 
