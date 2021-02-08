@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { SegmentChangeEventDetail } from '@ionic/core';
 import { Subscription } from 'rxjs';
+
 import { PlacesService } from '../places.service';
 import { AuthService } from '../../auth/auth.service';
 import { Place } from '../places.model';
@@ -34,7 +35,9 @@ export class DiscoverPage implements OnInit, OnDestroy {
 
   ionViewWillEnter() {
     this.isLoading = true;
-    this.placesService.fetchPlaces().subscribe(() => this.isLoading = false);
+    this.placesService.fetchPlaces().subscribe(() => {
+      this.isLoading = false;
+    });
   }
 
   onOpenMenu() {

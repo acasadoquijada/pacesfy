@@ -4,10 +4,9 @@ import { AuthService } from '../auth/auth.service';
 import { Booking } from './booking.model';
 import { take, tap, delay, switchMap, map} from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http';
-<<<<<<< Updated upstream
-=======
+
 import { environment } from 'src/environments/environment';
->>>>>>> Stashed changes
+
 
 interface BookingData {
     bookedFrom: string;
@@ -39,11 +38,7 @@ export class BookingService {
     
         let generatedId: string;
 
-<<<<<<< Updated upstream
-        return this.http.post<{name: string}>("", {...newBooking, id: null})
-=======
         return this.http.post<{name: string}>(environment.firebaseURL + "bookings.json", {...newBooking, id: null})
->>>>>>> Stashed changes
         .pipe(switchMap(resData => {
             generatedId = resData.name;
             return this.bookings;
@@ -56,11 +51,9 @@ export class BookingService {
     }
 
     cancelBooking(bookingId: string) {
-<<<<<<< Updated upstream
-        return this.http.delete(``
-=======
+
         return this.http.delete(`${environment.firebaseURL}bookings/${bookingId}.json`
->>>>>>> Stashed changes
+
         ).pipe(switchMap(() => {
             return this.bookings;
         }),
@@ -69,13 +62,6 @@ export class BookingService {
             this._bookings.next(bookings.filter(b => b.id !== bookingId));
         }));
     }
-<<<<<<< Updated upstream
-
-    fetchBookings() {
-        return this.http
-          .get<{ [key: string]: BookingData }>(
-
-=======
     
     fetchBookings() {
         return this.http
@@ -83,7 +69,6 @@ export class BookingService {
             `${environment.firebaseURL}bookings.json?orderBy="userId"&equalTo="${
               this.authService.userId
             }"`
->>>>>>> Stashed changes
           )
           .pipe(
             map(bookingData => {
