@@ -50,7 +50,16 @@ export class PlacesService {
         placeData.userId,
         placeData.location)
     }))
-    
+  }
+
+  uploadImage(image: File) {
+    const uploadData = new FormData();
+    uploadData.append("image", image);
+
+    return this.http.post<{imageUrl: string, imagePath: string}>(
+      "https://us-central1-ionic-angular-course-613b1.cloudfunctions.net/storeImage",
+      uploadData
+      );
   }
 
   addPlace(
@@ -59,16 +68,16 @@ export class PlacesService {
     price: number,
     dateFrom: Date,
     dateTo: Date,
-    location: PlaceLocation) {
+    location: PlaceLocation,
+    imageUrl: string) {
 
       let generatedId :string
-
 
       const newPlace = new Place(
         Math.random().toString(),
         title,
         description,
-        "https://media.guestofaguest.com/t_article_content/gofg-media/2018/08/1/51322/df.jpg",
+        imageUrl,
         price,
         dateFrom,
         dateTo,
