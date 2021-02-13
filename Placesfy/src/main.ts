@@ -5,9 +5,6 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import '@ionic/pwa-elements'
 
-if (environment.production) {
-  enableProdMode();
-}
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.log(err));

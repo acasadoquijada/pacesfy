@@ -57,7 +57,7 @@ export class PlacesService {
     uploadData.append("image", image);
 
     return this.http.post<{imageUrl: string, imagePath: string}>(
-      "https://us-central1-ionic-angular-course-613b1.cloudfunctions.net/storeImage",
+      environment.firebaseImageAPI,
       uploadData
       );
   }

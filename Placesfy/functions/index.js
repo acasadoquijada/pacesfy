@@ -9,7 +9,7 @@ const uuid = require('uuid/v4');
 const { Storage } = require('@google-cloud/storage');
 
 const storage = new Storage({
-  projectId: ''
+  projectId: ""
 });
 
 exports.storeImage = functions.https.onRequest((req, res) => {
