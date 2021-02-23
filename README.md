@@ -70,4 +70,13 @@ This file is the result of generating a private key in the **Firebase project pa
 
 ## Screenshots
 
-TODO
+![login](res/images/login.png)
+![discover](res/images/discover.png)
+
+![nav](res/images/nav.png)
+![offers](res/images/offers.png)
+
+![booking1](res/images/booking1.png)
+![booking2](res/images/booking2.png)
+
+![mybookings](res/images/mybookings.png)
